@@ -23,7 +23,7 @@ function runTimer() {
     timer[3]++;
 
     timer[0] = Math.floor((timer[3]/100)/60);
-    timer[1] = Math.floor((timer[3]/100) - (timer[0] * 60));
+    timer[1] = Math.floor((timer[3]/100) - (timer[0]*60));
     timer[2] = Math.floor(timer[3] - (timer[1] * 100) - (timer[0] * 6000));
 }
 
@@ -34,33 +34,39 @@ function spellCheck() {
 
     if (textEntered == originText) {
         clearInterval(interval);
-        testWrapper.style.borderColor = "#429890";
+        testWrapper.style.borderColor = "green";
     } else {
         if (textEntered == originTextMatch) {
-            testWrapper.style.borderColor = "#65CCf3";
+            testWrapper.style.borderColor = "#54c0eb";
         } else {
-            testWrapper.style.borderColor = "#E95D0F";
+            testWrapper.style.borderColor = "#fc5858";
         }
     }
-
 }
 
 // Start the timer:
 function start() {
-    let textEnterdLength = testArea.value.length;
-    if (textEnterdLength === 0 && !timerRunning) {
+    let textEnteredLength = testArea.value.length;
+    if (textEnteredLength === 0 && !timerRunning) {
         timerRunning = true;
         interval = setInterval(runTimer, 10);
     }
-    console.log(textEnterdLength);
+    console.log(textEnteredLength);
 }
 
 // Reset everything:
 function reset() {
-    console.log("reset button has been pressed!");
+    clearInterval(interval);
+    interval = null;
+    timer = [0,0,0,0];
+    timerRunning = false;
+
+    testArea.value = "";
+    theTimer.innerHTML = "00:00:00";
+    testWrapper.style.borderColor = "gray";
 }
 
-// Event listeners for keyboard input and the reset
+// Event listeners for keyboard input and the reset button:
 testArea.addEventListener("keypress", start, false);
 testArea.addEventListener("keyup", spellCheck, false);
 resetButton.addEventListener("click", reset, false);
